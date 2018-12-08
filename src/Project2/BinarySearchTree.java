@@ -12,71 +12,27 @@ package Project2;
 public class BinarySearchTree 
 {
 
-    private class Employee
-    {
-        // Create private variables to hold employee name and employee salary.
-        private String name;
-        private int salary;
-    
-        /**
-         * Default constructor.
-         */
-        public Employee() 
-        {
-        }
-
-        /**
-         * Overload constructor.
-         * @param name
-         * @param salary 
-         */
-        public Employee(String name, int salary) 
-        {
-            this.name = name;
-            this.salary = salary;
-        }
-
-        /**
-         * Accessor method for getting employee name.
-         * @return name
-         */
-        public String getName() 
-        {
-            return name;
-        }
-    
-        /**
-         * Mutator method for setting employee name.
-         * @param name 
-         */
-        public void setName(String name) 
-        {
-            this.name = name;
-        }
-    
-        /**
-         * Accessor method for getting employee salary.
-         * @return salary
-         */
-        public int getSalary() 
-        {
-            return salary;
-        }
-
-        /**
-         * Mutator method for setting employee salary.
-         * @param salary
-         */
-        public void setManager(int salary) 
-        {
-            this.salary = salary;
-        }        
-    }
     
     private class Node
     {
+        Employee employee;      // Element
+        Node next;              // Reference to successor.
+        Node prev;              // Reference to predecessor.
         
+        Node(Employee emp, Node n, Node p)
+        {
+            employee = emp;
+            next = n;
+            prev = p;            
+        }
+        
+        Node(Employee emp)
+        {
+            this(emp, null, null);
+        }
     }
+    
+    
     
     /**
      * @param args the command line arguments
