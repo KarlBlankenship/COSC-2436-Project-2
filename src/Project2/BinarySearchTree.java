@@ -12,26 +12,37 @@ package Project2;
 public class BinarySearchTree 
 {
 
-    
-    private class Node
+    public class Node 
     {
-        Employee employee;      // Element
-        Node next;              // Reference to successor.
-        Node prev;              // Reference to predecessor.
-        
+        private Employee employee;      // Element
+        private Node next;              // Reference to successor.
+        private Node prev;              // Reference to predecessor.
+
         Node(Employee emp, Node n, Node p)
         {
             employee = emp;
             next = n;
             prev = p;            
         }
-        
+
         Node(Employee emp)
         {
             this(emp, null, null);
-        }
+        } 
     }
     
+    public class Employee 
+{
+        // Create private variables to hold employee name and employee salary.
+        String name;
+        int salary;
+
+        public Employee(String name, int salary) 
+        {
+            this.name = name;
+            this.salary = salary;
+        }
+    }
     
     
     /**
