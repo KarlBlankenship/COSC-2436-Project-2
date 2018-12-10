@@ -6,27 +6,42 @@
 package Project2;
 
 /**
- *
+ * Employee class for storing employing objects. 
  * @author Karl
  */
-public class Employee {
+public class Employee 
+{
     // Create private variables to hold employee name and employee salary.
-        String name;
-        int salary;
+    private String name;
+    private int salary;
         
-        Employee(String name, int salary) 
-        {
-            this.name = name;
-            this.salary = salary;
-        }
+    /**
+     * Constructor for creating an employee object with both name and
+     * a salary.
+     * @param name
+     * @param salary 
+     */
+    Employee(String name, int salary) 
+    {
+        this.name = name;
+        this.salary = salary;
+    }
         
-        public String getName()
-        {
-            return name;
-        }
+    /**
+     * Getter method for retrieving the employee name.
+     * @return name
+     */
+    public String getName()
+    {
+        return name;
+    }
         
-        public int getSalary()
-        {
-            return salary;
-        }
+    /**
+     * Getter method for retrieving the employee salary.
+     * @return salary 
+     */
+    public int getSalary()
+    {
+        return salary;
+    }
 }

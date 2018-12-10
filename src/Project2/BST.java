@@ -111,9 +111,9 @@ public class BST
     {
         if(bstree == null)
             return new Node(emp); //return new Node(x);
-        if(emp.salary < bstree.employee.getSalary() && Math.abs(emp.salary - bstree.employee.getSalary()) >= 3000)
+        if(emp.getSalary() < bstree.employee.getSalary() && Math.abs(emp.getSalary() - bstree.employee.getSalary()) >= 3000)
             bstree.left = add(emp, bstree.left);
-        else if(emp.salary > bstree.employee.getSalary() && Math.abs(emp.salary - bstree.employee.getSalary()) >= 3000)
+        else if(emp.getSalary() > bstree.employee.getSalary() && Math.abs(emp.getSalary() - bstree.employee.getSalary()) >= 3000)
             bstree.right = add(emp, bstree.right);
         return bstree;
     }
@@ -258,19 +258,19 @@ public class BST
         if(bstree != null)
         {
             System.out.println("hello" + bstree.employee.getSalary());
-            if(bstree.employee.salary == x)
+            if(bstree.employee.getSalary() == x)
             {
-                System.out.println(x + " equals " + bstree.employee.salary); 
+                System.out.println(x + " equals " + bstree.employee.getSalary()); 
                 return bstree.employee;
             }
-            if(x < bstree.employee.salary)
+            if(x < bstree.employee.getSalary())
             {
-                System.out.println(x + " less than " + bstree.employee.salary);
+                System.out.println(x + " less than " + bstree.employee.getSalary());
                 return search(x, bstree.left);
             }
             else
             {
-                System.out.println(x + " greater than " + bstree.employee.salary);
+                System.out.println(x + " greater than " + bstree.employee.getSalary());
                 return search(x, bstree.right);
             }
         }
