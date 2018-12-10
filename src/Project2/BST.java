@@ -1,71 +1,90 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * This project loads the data below as text file. The implantation of this 
+ * project shall be done using Binary Search Tree using linked list. You should
+ * insert the information from the text file using binary tree sorted insertion
+ * method. You need to create remove, and search methods as well. There is a 
+ * condition during insertion or adding this data to the binary tree. Compare 
+ * the price differences of the previous salary to the current salary that you 
+ * are reading. Thus, don't insert any salary differences that is less than 
+ * $3000 .
+ *
+ * The search method shall allow a search by salary and print both the name and
+ * salary that is found, otherwise return not found message.
+ *
+ * The delete method shall allow to delete by salary. 
+ *
+ *
+ * Name 	Salary
+ * Betty 	44000
+ * Bob          48000
+ * Dilbert 	98000
+ * Joseph 	22300
+ * Nathan 	90000
+ * Sally 	91000
+ * Sam          87000
+ * Susan 	8900
+ * Veronica 	150000
  */
+
 package Project2;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- *
+ * BST Class is a binary search tree class utilizing a node structure
+ * that contains an Employee object for the field and contains a left node
+ * for Employee objects with salaries lower than the root node and right 
+ * node for salaries higher than the root node.
  * @author Karl
  */
-
-
-
 public class BST 
 {
-    
-    public class Node
+    /**
+     * Node class contains an Employee field as well as left and right nodes.
+     */
+    private class Node
     {
-        //int value;
-        Employee employee;
-        Node left, right;
+        private Employee employee;  // Employee object.
+        private Node left, right;   // Left and Right Nodes.
         
-        //Node(int val)
+        /**
+         * Constructor.
+         * @param emp 
+         */
         Node(Employee emp)
         {
-            //value = val;
             employee = emp;
             left = null;
             right = null;
         }
         
-        //Node(int val, Node leftChild, Node rightChild)
+        /**
+         * Constructor.
+         * @param emp
+         * @param leftChild
+         * @param rightChild 
+         */
         Node(Employee emp, Node leftChild, Node rightChild)
         {
-            //value = val;
             employee.equals(emp);
             left = leftChild;
             right = rightChild;
         }
     }
     
-    public Node root = null;
+    private Node root = null;   // Define the root node as null initially.
     
+    /**
+     * Public add method can be used from the main method to call the 
+     * recursive add method.
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public void add() throws FileNotFoundException, IOException
     {
-        //Employee emp = new Employee("Karl", 44000);
-        //root = add(emp, root);
-//        root = add(44000, null);
-//        add(48000, root);
-//        add(98000, root);
-//        add(23000, root);
-//        add(90000, root);
-//        add(91000, root);
-//        add(87000, root);
-//        add(8900, root);
-//        add(150000, root);
-
-        // Create List to hold Employee objects and for return.
-        //List<Employee> employeeList = new ArrayList();
-        
         // Create FileReader object and pass in file.
         FileReader fr = new FileReader("employee.txt");
         
@@ -78,53 +97,60 @@ public class BST
         
         // Write all buffered lines into Employee Instances and write to List.
         while (line != null) {
-            
-            // Create an instance of Employee.
-            //Employee emp = new Employee();
-            
-            // Split out name and manager from line.
-            // -1 is needed since the Veronica line has no second name
-            // after the comma in the text file.
+            // Split out name and manager from line and create Employee object.
             String[] lineEM = line.split(","); 
             Employee emp = new Employee(lineEM[0], Integer.parseInt(lineEM[1]));
-            // Set instance fields using array created above.
-            //emp.setName(lineEM[0]);
-            //emp.setManager(lineEM[1]);
-            
+
+            // If there are no current nodes, create the root node.
             if(root == null)
                 root = add(emp, root);
             else
                 add(emp, root);
-            
-            // Add the employee instance to the List.
-            //employeeList.add(emp);
-            
+
             // Read next line of file.
             line = br.readLine();    
         }
-        //return employeeList; // Return employee list.
-        
     }
     
-    //private Node add(int x, Node bstree)
+    /**
+     * Private add method for adding nodes recursively. This method will add
+     * add the nodes to the left or right based on the binary search algorithm
+     * based on the value of the Employee salary. This method also looks for 
+     * a difference between salaries of less than $3000 and will leave those 
+     * salaries out.
+     * @param emp
+     * @param bstree
+     * @return Node
+     */
     private Node add(Employee emp, Node bstree)
     {
         if(bstree == null)
             return new Node(emp); //return new Node(x);
-        if(emp.getSalary() < bstree.employee.getSalary() && Math.abs(emp.getSalary() - bstree.employee.getSalary()) >= 3000)
+        if(emp.getSalary() < bstree.employee.getSalary() && 
+                Math.abs(emp.getSalary() - bstree.employee.getSalary()) >= 3000)
             bstree.left = add(emp, bstree.left);
-        else if(emp.getSalary() > bstree.employee.getSalary() && Math.abs(emp.getSalary() - bstree.employee.getSalary()) >= 3000)
+        else if(emp.getSalary() > bstree.employee.getSalary() && 
+                Math.abs(emp.getSalary() - bstree.employee.getSalary()) >= 3000)
             bstree.right = add(emp, bstree.right);
         return bstree;
     }
     
     
-    
+    /**
+     * Private class RemoveResult is a class that used to remove a node from
+     * tree. This class will store the removed node and the remaining tree in
+     * an object.
+     */
     private class RemovalResult
     {
         Node node;  // removed Node.
         Node tree;  // remaining tree.
         
+        /**
+         * Constructor.
+         * @param node
+         * @param tree 
+         */
         RemovalResult(Node node, Node tree)
         {
             this.node = node;
@@ -132,6 +158,13 @@ public class BST
         }
     }
     
+    /**
+     * Public remove method is used from the main method to call the recursive
+     * remove method. This method searches for the node to be removed by looking
+     * for a specified salary.
+     * @param x
+     * @return boolean
+     */
     public boolean remove(int x)
     {
         RemovalResult result = remove(root, x);
@@ -144,6 +177,15 @@ public class BST
         }
     }
     
+    /**
+     * Private recursive removal method will remove a node from the binary
+     * search tree. This method will search for the node to be removed based
+     * on the specified salary.
+     * search tree. 
+     * @param bTree
+     * @param x
+     * @return 
+     */
     private RemovalResult remove(Node bTree, int x)
     {
         if(bTree == null)
@@ -189,6 +231,12 @@ public class BST
         return new RemovalResult(node, tree);
     }
     
+    /**
+     * Private method that removes the largest node in the binary tree. 
+     * This method is called by the recursive remove method.
+     * @param bTree
+     * @return 
+     */
     private RemovalResult removeLargest(Node bTree)
     {
         if(bTree == null)
@@ -207,112 +255,115 @@ public class BST
             return remResult;
         }
     }
-    
-//    public boolean contains(Employee emp)
-//    {
-//        return contains(emp, root);
-//    }
-//    
-//    private boolean contains(Employee emp, Node bstree)
-//    {
-//        if(bstree == null)
-//            return false;
-//        if(emp.salary == bstree.employee.getSalary())
-//            return true;
-//        if(emp.salary < bstree.employee.getSalary())
-//            return contains(emp, bstree.left);
-//        else
-//            return contains(emp, bstree.right);
-//    }
-    
-//    public int search(int x)
-//    {
-//        if(contains(x))
-//        {
-//            System.out.println("Value " + x + " was found in BST");
-//            return x;
-//        }
-//        else
-//        {
-//            System.out.println("Value " + x + " was not found in BST");
-//            return -1;
-//        }
-//    }
-    
+
+    /**
+     * Public search method is the search method that can be called from the
+     * main method. This method will call the recursive search method to find
+     * a node, if it exists, based on a specified salary. This method will also
+     * display the name of the Employee and the Salary of the Employee if the
+     * specified salary was found. Not Found will be displayed if the Employee
+     * was not found.
+     * @param x 
+     */
     public void search(int x)
     {
-       
-        
-        
+        // Create a temp Employee object that is equal to the search result.
         Employee temp = search(x, root);
         
+        // Display the Name and Salary.
         System.out.println("Name " + temp.getName());
         System.out.println("Salary " + temp.getSalary());
-        
-    }
-    
-    private Employee search(int x, Node bstree)
-    {
-       
-
-        if(bstree != null)
-        {
-            System.out.println("hello" + bstree.employee.getSalary());
-            if(bstree.employee.getSalary() == x)
-            {
-                System.out.println(x + " equals " + bstree.employee.getSalary()); 
-                return bstree.employee;
-            }
-            if(x < bstree.employee.getSalary())
-            {
-                System.out.println(x + " less than " + bstree.employee.getSalary());
-                return search(x, bstree.left);
-            }
-            else
-            {
-                System.out.println(x + " greater than " + bstree.employee.getSalary());
-                return search(x, bstree.right);
-            }
-        }
-        else
-        {
-            return new Employee("Not Found", 0);
-        }
-            
-    }
-    
-    private void inorder(Node root)
-    {
-        if(root != null)
-        {
-            inorder(root.left);
-            System.out.println(root.employee.getName() + " ");
-            inorder(root.right);
-            
-        }
-    }
-    
-    public void display()
-    {
-        inorder(root);
     }
     
     /**
+     * Private recursive search method that will search the binary tree and
+     * return the employee object if found.
+     * @param x
+     * @param bstree
+     * @return 
+     */
+    private Employee search(int x, Node bstree)
+    {
+       
+        // If the node exists, recursively search for the salary value.
+        if(bstree != null)
+        {
+            if(bstree.employee.getSalary() == x)
+                return bstree.employee;
+            if(x < bstree.employee.getSalary())
+                return search(x, bstree.left);
+            else
+                return search(x, bstree.right);
+        }
+        else
+            return new Employee("Not Found", 0); 
+    }
+    
+    /**
+     * Public display method that can be called from the main method. 
+     * This method will call the recursive display method.
+     */
+    public void display()
+    {
+        display(root);
+    }
+    
+    /**
+     * Private method for recursively displaying the binary search tree. 
+     * @param root 
+     */
+    private void display(Node root)
+    {
+        if(root != null)
+        {
+            display(root.left);
+            System.out.println(root.employee.getName() + " ");
+            display(root.right);
+        }
+    }
+    
+    /**
+     * The main method for calling the above methods. 
      * @param args the command line arguments
      * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException 
     {
+        // Create a new binary search tree object.
         BST bst = new BST();
+        
+        // Call the add method method to load the text file into
+        // the binary search tree structure.
         bst.add();
+        // Display the results to confirm that test file loaded properly.
+        // Confirm that Sally was not loaded since her salary was onlt $1000
+        // different than Nathans.
+        System.out.println("Employees from test file minus Sally: ");
         bst.display();
-        System.out.println(" ");
+        System.out.println("");
+        
+        // Test the remove functionality by entering an invalid salary.
+        bst.remove(98001);
+        // Display the results which should be the full list minus Sally.
+        System.out.println("Employees minus anyone making $98001: ");
+        bst.display();
+        System.out.println("");
+        
+        // Test the remove functionality by entering a valid salary of 
+        // $98000 thus removing Dilbert.
         bst.remove(98000);
+        System.out.println("Remove Dilbert at $98000: ");
         bst.display();
-        System.out.println(" ");
-        bst.search(22000);
+        System.out.println("");
         
+        // Test the search functionality by searching for an invalid salary.
+        System.out.println("The employee making $43297: ");
+        bst.search(43297);
+        System.out.println("");
         
-    }
-    
+        // Test the system by searching for Veronica at $150,000.
+        System.out.println("The employee making $150000: ");
+        bst.search(150000);
+        System.out.println("");
+    } 
 }
